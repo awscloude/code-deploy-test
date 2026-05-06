@@ -1,0 +1,28 @@
+version: 0.0
+os: linux
+
+files:
+  - source: /
+    destination: /var/www/html
+
+permissions:
+  - object: /var/www/html
+    owner: www-data
+    group: www-data
+    mode: 755
+    pattern: "**"
+
+hooks:
+
+  AfterInstall:
+    - location: deploy/after_install.sh
+      timeout: 300
+      runas: root
+    - location: deploy/cache_clear.sh
+      timeout: 300
+      runas: root
+
+  ApplicationStart:
+    - location: deploy/restart.sh
+      timeout: 300
+      runas: root
